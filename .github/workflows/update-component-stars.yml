@@ -1,0 +1,93 @@
+name: Update Component Stars
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-component-stars
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      # 读检出的 components.json，不走 raw.githubusercontent.com：
+      # 线上地址有缓存，刚合并的条目可能读不到
+      - name: Fetch component stars
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python fetch_component_stars.py --source components.json --output components-stars.json
+
+      # 收录表从 components.json 生成，不手写。
+      #
+      # 这一步会往 main 推提交，但用的是默认 GITHUB_TOKEN——它推的 push 不会再触发
+      # 工作流，所以不会自激。将来若换成 PAT，这里就得加 [skip ci] 之类的护栏。
+      # 失败不阻断后面的数据发布：收录表只是文档，组件清单才是正事。
+      - name: Sync README component table
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          python render_readme_table.py
+          if [ -n "$(git status --porcelain README.md README_EN.md)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add README.md README_EN.md
+            git commit -m "chore: 按 components.json 同步收录表"
+            git push origin HEAD:main
+          else
+            echo "README component table already matches components.json"
+          fi
+
+      - name: Publish data branch
+        env:
+          TARGET_BRANCH: component-stars-data
+          TARGET_FILE: components-stars.json
+        run: |
+          set -euo pipefail
+
+          tmp_dir="$(mktemp -d)"
+          cp "$TARGET_FILE" "$tmp_dir/$TARGET_FILE"
+          rm -f "$TARGET_FILE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git switch --orphan "$TARGET_BRANCH"
+          git rm -rf --ignore-unmatch .
+
+          cp "$tmp_dir/$TARGET_FILE" "$TARGET_FILE"
+          git add "$TARGET_FILE"
+
+          git commit \
+            -m "chore: 覆盖组件星标数据" \
+            -m "- 使用最新生成的 components-stars.json 覆盖数据分支"
+          git push --force origin HEAD:"$TARGET_BRANCH"
+
+      # 数据分支推完不清缓存的话，jsDelivr 还会发十几个小时的旧数据。
+      # App 读这份清单优先走 jsDelivr，不清就等于改了没生效。
+      - name: Purge jsDelivr cache
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@component-stars-data/components-stars.json"
+          echo "Purging $url"
+          curl -sS --max-time 60 "$url" || echo "Purge request failed; jsDelivr will catch up on its own TTL."

@@ -10,5 +10,25 @@
       "yuketang",
       "ykt"
     ]
+  },
+  {
+    "repo": "cursimple/cursimple-notify-component",
+    "aliases": [
+      "多平台通知",
+      "通知推送",
+      "消息推送",
+      "微信通知",
+      "QQ通知",
+      "飞书",
+      "企业微信",
+      "钉钉",
+      "邮箱通知",
+      "Server酱",
+      "PushPlus",
+      "WxPusher",
+      "PushDeer",
+      "Bark",
+      "notify"
+    ]
   }
 ]

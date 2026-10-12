@@ -1,26 +1,27 @@
-# 🧩 Cursimple 扩展组件注册表
+# 课简 · 扩展组件收录
 
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 **[English](README_EN.md)** | **中文**
 
-> **课简（Cursimple）的官方扩展组件总仓库。**  
-> 只有收录在此仓库中的组件，才会在课简的组件列表中显示。
+课简的默认扩展组件注册表，收录雨课堂通知、多平台通知等独立功能包。网页和应用市场共用 [`components.json`](components.json)，用户也可以在课简中添加其他组件来源。
+
+[组件收录网页](https://cursimple.github.io/cursimple-components/) · [课简官网](https://cursimple.github.io/cursimple-app/) · [学校插件收录](https://cursimple.github.io/cursimple-plugins/)
 
 ---
 
 ## 🎯 这是什么？
 
-这是课简的**扩展组件注册表**。所有在课简中展示的扩展组件，都需要被收录到本仓库的 [`components.json`](components.json) 文件中。
+这是课简的默认公有组件来源。收录信息在 [`components.json`](components.json) 维护；应用的组件来源设置也支持其他注册表和单个组件 Release 仓库。
 
 ### 组件和插件有什么不同？
 
 | | 导课插件（[cursimple-plugins](https://github.com/cursimple/cursimple-plugins)） | 扩展组件（本仓库） |
 |---|---|---|
 | 做什么 | 从教务系统导入课表 | 把作业、考试、公告等内容持续同步进课简 |
-| 怎么跑 | 导课时跑一次，交出课表就结束 | 装好后常驻：登录一次，之后由课简在后台定时同步 |
+| 怎么跑 | 导课时跑一次，交出课表就结束 | 安装启用后由课简按同步策略调度；后台运行与登录有效期受系统和平台影响 |
 | 产出 | 课表 | 新内容通知、截止前提醒、侧边栏日历、课表事务 |
-| 在哪找 | 「从教务系统导课」按学校名搜索 | 组件列表，按组件名或别名搜索 |
+| 在哪找 | 「从教务系统导课」按学校名搜索 | 「组件」市场和本仓库收录网页，按组件名或别名搜索 |
 
 组件包的结构与导课插件相同（`manifest.json` + 入口脚本 + `checksums.json`），区别在 manifest 里写的是 `"kind": "extension"`。
 
@@ -36,6 +37,8 @@
 > 💡 上表由 [`components.json`](components.json) 自动生成，请勿手改；星标等元数据会定期自动更新。
 
 ---
+
+<a id="contribute"></a>
 
 ## 🤝 如何提交组件？
 
@@ -110,6 +113,8 @@ cursimple-components/
 ├── components.json                     # 组件注册表（核心文件，手写）
 ├── fetch_component_stars.py            # 抓取组件仓库元数据的脚本
 ├── render_readme_table.py              # 按 components.json 生成收录表
+├── docs/                              # Website source / 组件网页
+├── scripts/build_site.py              # Website bundle / 站点打包
 └── LICENSE                             # MIT 许可证
 ```
 
@@ -122,15 +127,36 @@ cursimple-components/
 
 ---
 
+## 组件网页与部署
+
+网页源码位于 `docs/`，提供组件搜索、搜索别名、真实星标与仓库链接、版本下载入口、安装说明和 GitHub 收录入口，支持简体、繁体与英文、浅色与深色。页面先显示打包的资料，再更新在线元数据；网络失败时仍保留可浏览内容。
+
+```bash
+python3 scripts/build_site.py         # 从 components.json 打包网站到 build/site
+node --test docs/tests/*.test.cjs
+python3 -m http.server 8895 --directory build/site
+```
+
+本地访问 `http://localhost:8895/`。注册条目以根目录 `components.json` 为准，构建时同步网页快照；`--refresh` 可更新已公开的 GitHub 元数据。页面不接受 GitHub 令牌，编辑和 PR 由 GitHub 自身处理。
+
+第一次发布时，在仓库 **Settings → Pages** 将 Source 设为 **GitHub Actions**。合并相关修改或手动运行 `Component Catalog Pages` 后，工作流校验并部署到 `https://cursimple.github.io/cursimple-components/`，部署产物仅包含网页所需文件。现有元数据同步工作流继续独立运行。
+
 ## 📄 许可证
 
 本项目基于 [MIT 许可证](LICENSE) 开源。
 
 ---
 
+## 组件怎么用
+
+- **雨课堂通知**：同步学习任务和课程公告，提供新内容与截止提醒，按组件能力展示日历、课表事务和桌面卡片。[查看功能与版本](https://github.com/cursimple/YuKeTang_notice_plugin)
+- **多平台通知**：将上课提醒、笔记到期和组件消息发送到微信、QQ、飞书、企业微信、钉钉、邮箱等渠道，在组件内设置目标与核对回执。[查看功能与版本](https://github.com/cursimple/cursimple-notify-component)
+
+在课简「组件」市场中搜索并安装，也可下载组件 Release 的 ZIP 后使用「导入 ZIP」。安装后完成登录或通知绑定；兼容要求、账号状态、同步和真实送达以组件详情与平台回执为准。
+
 ## 🔗 相关链接
 
-- [课简（Cursimple）](https://github.com/cursimple) - 课简主项目
+- [课简（Cursimple）](https://github.com/cursimple/cursimple-app) - 课简主项目
 - [导课插件注册表](https://github.com/cursimple/cursimple-plugins) - 从教务系统导课的插件
 - [提交组件](https://github.com/cursimple/cursimple-components/edit/main/components.json) - 添加你的组件
 

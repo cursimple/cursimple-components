@@ -1,0 +1,45 @@
+name: Component Catalog Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "components.json"
+      - "scripts/build_site.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: component-catalog-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build and verify catalog
+        run: |
+          python3 scripts/build_site.py --refresh
+          node --check docs/app.js
+          node --check docs/catalog.js
+          node --check docs/i18n.js
+          node --test docs/tests/*.test.cjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/site
+      - uses: actions/deploy-pages@v4
+        id: deployment

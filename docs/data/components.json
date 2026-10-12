@@ -1,0 +1,34 @@
+[
+  {
+    "repo": "cursimple/YuKeTang_notice_plugin",
+    "aliases": [
+      "雨课堂通知",
+      "雨课堂",
+      "长江雨课堂",
+      "黄河雨课堂",
+      "荷塘雨课堂",
+      "yuketang",
+      "ykt"
+    ]
+  },
+  {
+    "repo": "cursimple/cursimple-notify-component",
+    "aliases": [
+      "多平台通知",
+      "通知推送",
+      "消息推送",
+      "微信通知",
+      "QQ通知",
+      "飞书",
+      "企业微信",
+      "钉钉",
+      "邮箱通知",
+      "Server酱",
+      "PushPlus",
+      "WxPusher",
+      "PushDeer",
+      "Bark",
+      "notify"
+    ]
+  }
+]

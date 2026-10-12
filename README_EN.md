@@ -1,26 +1,27 @@
-# 🧩 Cursimple Extension Component Registry
+# CurSimple · Component catalog
 
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 **English** | **[中文](README.md)**
 
-> **The official extension component registry for Cursimple.**  
-> Only components listed in this repository will appear in Cursimple's component list.
+CurSimple's default extension-component registry, listing independent packages such as YuKeTang notices and multi-platform notifications. The website and app market share [`components.json`](components.json); users can also add other component sources in CurSimple.
+
+[Component catalog](https://cursimple.github.io/cursimple-components/) · [App website](https://cursimple.github.io/cursimple-app/) · [School plugin catalog](https://cursimple.github.io/cursimple-plugins/)
 
 ---
 
 ## 🎯 What is this?
 
-This is the **extension component registry** for Cursimple. Every extension component shown in Cursimple must be registered in the [`components.json`](components.json) file of this repository.
+This is CurSimple's default public component source. Maintain listings in [`components.json`](components.json); users can also add other registries or individual component Release repositories in the app's source settings.
 
 ### Components vs. plugins
 
 | | Import plugins ([cursimple-plugins](https://github.com/cursimple/cursimple-plugins)) | Extension components (this repo) |
 |---|---|---|
 | Purpose | Import a timetable from the school's academic system | Keep homework, exams, announcements, etc. synced into Cursimple |
-| Lifecycle | Runs once per import and exits after handing over the timetable | Stays installed: sign in once, then Cursimple syncs it periodically in the background |
+| Lifecycle | Runs once per import and exits after handing over the timetable | After installation/enabling, CurSimple schedules sync; background access and sign-in validity depend on the system and platform |
 | Output | Timetable | New-item notifications, due-date reminders, sidebar calendar, timetable tasks |
-| Where to find | "Import from academic system", searched by school name | Component list, searched by component name or alias |
+| Where to find | "Import from academic system", searched by school name | Components market and this catalog website, searched by name or alias |
 
 A component package has the same layout as an import plugin (`manifest.json` + entry script + `checksums.json`); the difference is `"kind": "extension"` in its manifest.
 
@@ -36,6 +37,8 @@ A component package has the same layout as an import plugin (`manifest.json` + e
 > 💡 The table above is generated from [`components.json`](components.json) — do not edit it by hand. Metadata such as stars is refreshed automatically.
 
 ---
+
+<a id="contribute"></a>
 
 ## 🤝 How to Submit a Component?
 
@@ -110,6 +113,8 @@ cursimple-components/
 ├── components.json                     # Component registry (core file, hand-written)
 ├── fetch_component_stars.py            # Fetches component repository metadata
 ├── render_readme_table.py              # Generates the README table from components.json
+├── docs/                              # Website source / 组件网页
+├── scripts/build_site.py              # Website bundle / 站点打包
 └── LICENSE                             # MIT License
 ```
 
@@ -122,11 +127,32 @@ cursimple-components/
 
 ---
 
+## Catalog website and deployment
+
+The website source is in `docs/`. It supports search, aliases, real GitHub stars, repositories/releases, installation guidance and contribution links in Simplified Chinese, Traditional Chinese and English, with light/dark themes. Bundled data renders before optional online metadata refresh; network failures retain browsable content.
+
+```bash
+python3 scripts/build_site.py
+node --test docs/tests/*.test.cjs
+python3 -m http.server 8895 --directory build/site
+```
+
+Open `http://localhost:8895/`. The root `components.json` is authoritative and copied into the site snapshot at build time. Add `--refresh` to update public metadata. The site never asks for a GitHub token; edits and PRs use GitHub itself.
+
+For the first deployment, set **Settings → Pages → Source** to **GitHub Actions**. Merge the website changes or manually run `Component Catalog Pages`; it verifies the site and deploys the required runtime files to `https://cursimple.github.io/cursimple-components/`. The existing metadata workflow remains independent.
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ---
+
+## Using components
+
+- **YuKeTang notices:** sync learning tasks and course announcements, configure new-item/deadline reminders and use supported calendars, timetable events and widgets. [Features and versions](https://github.com/cursimple/YuKeTang_notice_plugin)
+- **Multi-platform notifications:** send class notices, note deadlines and component messages to WeChat, QQ, Feishu, WeCom, DingTalk, email and other channels, with recipient controls and delivery receipts. [Features and versions](https://github.com/cursimple/cursimple-notify-component)
+
+Search and install through CurSimple's Components market, or download a component Release ZIP and use Import ZIP. Complete sign-in or notification binding, then check compatibility, account state and actual sync/delivery results in the component.
 
 ## 🔗 Related Links
 

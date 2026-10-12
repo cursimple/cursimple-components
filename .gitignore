@@ -1,2 +1,4 @@
 __pycache__/
-components-stars.json
+/components-stars.json
+*.pyc
+build/

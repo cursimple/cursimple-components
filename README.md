@@ -33,6 +33,7 @@
 |---------|---------|
 | [cursimple/YuKeTang_notice_plugin](https://github.com/cursimple/YuKeTang_notice_plugin) | 雨课堂通知 / 雨课堂 / 长江雨课堂 / 黄河雨课堂 / 荷塘雨课堂 / yuketang / ykt |
 | [cursimple/cursimple-notify-component](https://github.com/cursimple/cursimple-notify-component) | 多平台通知 / 通知推送 / 消息推送 / 微信通知 / QQ通知 / 飞书 / 企业微信 / 钉钉 / 邮箱通知 / Server酱 / PushPlus / WxPusher / PushDeer / Bark / notify |
+| [cursimple/cursimple-layout-component](https://github.com/cursimple/cursimple-layout-component) | 布局 / 底栏 / 底边栏 / 底部导航 / 导航栏 / layout / bottom bar |
 
 > 💡 上表由 [`components.json`](components.json) 自动生成，请勿手改；星标等元数据会定期自动更新。
 

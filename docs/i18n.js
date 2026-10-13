@@ -22,6 +22,7 @@
       format: '注册条目示例', developer: '组件开发指南', privacy: '本网页用于浏览收录资料；账号登录、通知绑定和安装操作在课简或 GitHub 中完成。',
       rainName: '雨课堂通知', rainDesc: '在课简查看雨课堂作业、考试与课程公告，设置新内容和截止提醒；组件支持的任务可显示在日历、课表事务和桌面卡片中。',
       notifyName: '多平台通知', notifyDesc: '把课简的上课提醒、笔记到期和组件消息发送到微信、QQ、飞书、企业微信、钉钉、邮箱等渠道，在组件内管理目标与发送回执。',
+      layoutName: '布局', layoutDesc: '把课简的导航从侧边栏换成底边栏：课表和「我的」固定在两端，中间自选最多三个入口，随时换回侧边栏。需要课简 0.7.11 以上。',
     },
     'zh-TW': {
       title: '課簡 · 元件收錄', brand: '課簡元件', app: '課簡官網', plugins: '匯入課表外掛', source: '元件儲存庫',
@@ -41,6 +42,7 @@
       format: '註冊項目範例', developer: '元件開發指南', privacy: '本網頁用於瀏覽收錄資料；帳號登入、通知綁定與安裝操作在課簡或 GitHub 中完成。',
       rainName: '雨課堂通知', rainDesc: '在課簡查看雨課堂作業、考試與課程公告，設定新內容與截止提醒；元件支援的任務可顯示於日曆、課表事務及桌面卡片。',
       notifyName: '多平台通知', notifyDesc: '把課簡的上課提醒、筆記到期與元件訊息傳送到微信、QQ、飛書、企業微信、釘釘、電子郵件等管道，在元件內管理目標與傳送回執。',
+      layoutName: '佈局', layoutDesc: '把課簡的導覽從側邊欄換成底欄：課表與「我的」固定在兩端，中間自選最多三個入口，隨時換回側邊欄。需要課簡 0.7.11 以上。',
     },
     en: {
       title: 'CurSimple · Component catalog', brand: 'CurSimple', app: 'App website', plugins: 'Plugins', source: 'Registry',
@@ -60,6 +62,7 @@
       format: 'Registry entry example', developer: 'Component development guide', privacy: 'This page browses catalog information. Account sign-in, notification binding and installation take place in CurSimple or GitHub.',
       rainName: 'YuKeTang notices', rainDesc: 'Follow YuKeTang assignments, exams and course announcements in CurSimple. Configure new-item and deadline reminders; supported tasks can appear in calendars, timetable events and home screen widgets.',
       notifyName: 'Multi-platform notifications', notifyDesc: 'Send class reminders, note deadlines and component messages to WeChat, QQ, Feishu, WeCom, DingTalk, email and other services. Manage recipients and delivery receipts inside the component.',
+      layoutName: 'Layout', layoutDesc: 'Move CurSimple navigation from the sidebar to a bottom bar: Timetable and Me stay at the ends, with up to three entries of your choice between them. Switch back to the sidebar any time. Requires CurSimple 0.7.11 or newer.',
     },
   };
   function normalize(value) {
@@ -78,6 +81,7 @@
     return {
       'cursimple/YuKeTang_notice_plugin': { name: t('rainName', language), description: t('rainDesc', language) },
       'cursimple/cursimple-notify-component': { name: t('notifyName', language), description: t('notifyDesc', language) },
+      'cursimple/cursimple-layout-component': { name: t('layoutName', language), description: t('layoutDesc', language) },
     };
   }
   return { messages, normalize, t, labels };

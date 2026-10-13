@@ -30,5 +30,17 @@
       "Bark",
       "notify"
     ]
+  },
+  {
+    "repo": "cursimple/cursimple-layout-component",
+    "aliases": [
+      "布局",
+      "底栏",
+      "底边栏",
+      "底部导航",
+      "导航栏",
+      "layout",
+      "bottom bar"
+    ]
   }
 ]
